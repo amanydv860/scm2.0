@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   mysql:
     image: mysql:8
@@ -28,7 +26,7 @@ services:
     depends_on:
       - mysql
   springboot:
-    build: .
+    image: amanyadav860/scm20:1.0.0
     container_name: scm_springboot_project
     environment:
       SERVER_PORT: 8080
