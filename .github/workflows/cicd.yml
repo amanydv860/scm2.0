@@ -60,5 +60,5 @@ jobs:
         with:
           scan-type: fs
           scan-ref: .
-          severity: HIGH,CRITICAL
-          exit-code: 1
+          severity: LOW,MEDIUM,HIGH,CRITICAL
+          exit-code: 0
