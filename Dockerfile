@@ -1,22 +1,14 @@
-# FROM openjdk:21-alpine
-# WORKDIR /app
-# COPY dist/scm2.0-0.0.1-SNAPSHOT.jar app/scm2.0-0.0.1-SNAPSHOT.jar
-
-# EXPOSE 8080
-
-# ENTRYPOINT ["java", "-jar", "app/scm2.0-0.0.1-SNAPSHOT.jar"]
-
-
-# Use a lightweight OpenJDK runtime
+# Build stage
 FROM eclipse-temurin:21-jdk-jammy AS builder
 WORKDIR /app
-COPY dist/scm2.0-0.0.1-SNAPSHOT.jar app.jar
+COPY pom.xml .
+COPY src ./src
+RUN ./mvnw clean package -DskipTests
 
-# FROM eclipse-temurin:21-jre-jammy
-# use distroless for a smaller image
-FROM gcr.io/distroless/java:21   
+# Runtime stage
+FROM gcr.io/distroless/java:21
 WORKDIR /app
-COPY --from=builder /app/app.jar app.jar
+COPY --from=builder /app/target/*.jar app.jar
 
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
